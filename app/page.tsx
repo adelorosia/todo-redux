@@ -1,8 +1,19 @@
+"use client";
 import TaskItems from '@/components/TaskItems'
 import TopForm from '@/components/TopForm'
-import React from 'react'
+import { setItems } from '@/slice/TaskSlice';
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
 
-const page = () => {
+const Home = () => {
+  const dispatch=useDispatch()
+  useEffect(() => {
+    const storedData = localStorage.getItem("data");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      dispatch(setItems(parsedData));
+    }
+  }, [dispatch]);
   return (
     
     <div className='wrapper bg-blue-300 h-screen w-full flex justify-center items-center'>
@@ -14,4 +25,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Home

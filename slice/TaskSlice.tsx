@@ -5,11 +5,13 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface ITaskSliceState {
   items: IItems[];
   task: string;
+
 }
 
 const initialState: ITaskSliceState = {
   items: [],
   task: "",
+
 };
 
 const itemSlice = createSlice({
@@ -22,6 +24,7 @@ const itemSlice = createSlice({
     setTask: (state, action) => {
       state.task = action.payload;
     },
+
   },
 });
 

@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setItems, setTask } from "@/slice/TaskSlice";
+import { IItems } from "@/interface";
 
 const TopForm = () => {
   const task = useSelector((state: RootState) => state.items.task);
@@ -14,18 +15,24 @@ const TopForm = () => {
     dispatch(setTask(event.target.value));
   };
 
-  //wir schicken task zu unser Array mit Name items
+
+  const saveDataToLocalStorege = (data:IItems[]) => {
+    const dataJSON = JSON.stringify(data);
+    localStorage.setItem("data", dataJSON);
+  };
+
   const hanlderAddButton = () => {
-    if (task.length) {
-      dispatch(
-        setItems([
-          ...items,
-          { id: new Date().toISOString(), task: task, done: false },
-        ])
-      );
+    if (task) {
+      const newItems = [
+        ...items,
+        { id: new Date().toISOString(), task: task, done: true },
+      ];
+      saveDataToLocalStorege(newItems);  
+      dispatch(setItems(newItems));
       dispatch(setTask(""));
     }
   };
+
   return (
     <div className="w-full">
       <h1 className=" font-extrabold text-3xl font-viga text-center">
