@@ -2,17 +2,30 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { setTask } from "@/slice/TaskSlice";
+import { setItems, setTask } from "@/slice/TaskSlice";
 
 const TopForm = () => {
   const task = useSelector((state: RootState) => state.items.task);
+  const items = useSelector((state: RootState) => state.items.items);
   const dispatch = useDispatch();
 
-//   wir nehmen value von input
+  //   wir nehmen value von input
   const OnInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTask(event.target.value));
   };
 
+  //wir schicken task zu unser Array mit Name items
+  const hanlderAddButton = () => {
+    if (task.length) {
+      dispatch(
+        setItems([
+          ...items,
+          { id: new Date().toISOString(), task: task, done: false },
+        ])
+      );
+      dispatch(setTask(""));
+    }
+  };
   return (
     <div className="w-full">
       <h1 className=" font-extrabold text-3xl font-viga text-center">
@@ -26,7 +39,10 @@ const TopForm = () => {
           value={task}
           onChange={OnInputChange}
         />
-        <button className="col-span-3 border-l bg-zinc-100 rounded-r-lg font-bold font-viga text-green-900 hover:text-red-700 hover:text-lg transition-all duration-200">
+        <button
+          className="col-span-3 border-l bg-zinc-100 rounded-r-lg font-bold font-viga text-green-900 hover:text-red-700 hover:text-lg transition-all duration-200"
+          onClick={hanlderAddButton}
+        >
           Add Task
         </button>
       </div>
