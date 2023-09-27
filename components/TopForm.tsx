@@ -8,6 +8,7 @@ import { IItems } from "@/interface";
 const TopForm = () => {
   const task = useSelector((state: RootState) => state.items.task);
   const items = useSelector((state: RootState) => state.items.items);
+  const disable = useSelector((state: RootState) => state.items.disable);
   const dispatch = useDispatch();
 
   //   wir nehmen value von input
@@ -15,8 +16,7 @@ const TopForm = () => {
     dispatch(setTask(event.target.value));
   };
 
-
-  const saveDataToLocalStorege = (data:IItems[]) => {
+  const saveDataToLocalStorege = (data: IItems[]) => {
     const dataJSON = JSON.stringify(data);
     localStorage.setItem("data", dataJSON);
   };
@@ -27,7 +27,7 @@ const TopForm = () => {
         ...items,
         { id: new Date().toISOString(), task: task, done: true },
       ];
-      saveDataToLocalStorege(newItems);  
+      saveDataToLocalStorege(newItems);
       dispatch(setItems(newItems));
       dispatch(setTask(""));
     }
@@ -45,10 +45,14 @@ const TopForm = () => {
           placeholder="Enter your task hear"
           value={task}
           onChange={OnInputChange}
+          disabled={disable}
         />
         <button
-          className="col-span-3 border-l bg-zinc-100 rounded-r-lg font-bold font-viga text-green-900 hover:text-red-700 hover:text-lg transition-all duration-200"
+          className={`col-span-3 border-l bg-zinc-100 rounded-r-lg font-bold font-viga text-green-900 transition-all duration-200 ${
+            !disable && "hover:text-red-700 hover:text-lg "
+          }`}
           onClick={hanlderAddButton}
+          disabled={disable}
         >
           Add Task
         </button>
